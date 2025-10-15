@@ -1,5 +1,5 @@
 package package1;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -20,11 +20,12 @@ public class Main {
                 case 1 -> addStudent(students, sc);
                 case 2 -> viewStudents(students);
                 case 3 -> updateStudent(students, sc);
-                case 4 -> System.out.println("\nThank you for using the Student Management System. Goodbye!");
+                case 4 -> deleteStudent(students, sc);
+                case 5 -> System.out.println("\nThank you for using the Student Management System. Goodbye!");
                 default -> System.out.println("\nInvalid choice! Please try again.");
             }
 
-        } while (choice != 4);
+        } while (choice != 5);
 
         sc.close();
     }
@@ -42,7 +43,8 @@ public class Main {
         System.out.println("  1. Add Student");
         System.out.println("  2. View Students");
         System.out.println("  3. Update Student");
-        System.out.println("  4. Exit");
+        System.out.println("  4. Delete Student");
+        System.out.println("  5. Exit");
         System.out.println("----------------------------------------------");
     }
 
@@ -51,8 +53,8 @@ public class Main {
         System.out.println("\nEnter Student Details Below:");
         System.out.print("  ID: ");
         int id = sc.nextInt();
-        sc.nextLine(); 
-        
+        sc.nextLine(); // consume newline
+
         System.out.print("  Name: ");
         String name = sc.nextLine();
 
@@ -94,7 +96,7 @@ public class Main {
 
         System.out.print("\nEnter the ID of the student to update: ");
         int id = sc.nextInt();
-        sc.nextLine(); // consume newline
+        sc.nextLine(); 
 
         boolean found = false;
 
@@ -125,6 +127,41 @@ public class Main {
         }
 
         if (!found) {
+            System.out.println("\nNo student found with ID " + id);
+        }
+    }
+
+    // --- Delete Student Feature
+    public static void deleteStudent(ArrayList<Student> students, Scanner sc) {
+        if (students.isEmpty()) {
+            System.out.println("\nNo students available to delete.");
+            return;
+        }
+
+        System.out.print("\nEnter the ID of the student to delete: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        boolean removed = false;
+
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).getId() == id) {
+                System.out.print("Are you sure you want to delete " + students.get(i).getName() + "? (y/n): ");
+                String confirm = sc.nextLine();
+
+                if (confirm.equalsIgnoreCase("y")) {
+                    students.remove(i);
+                    System.out.println("\nStudent deleted successfully!");
+                } else {
+                    System.out.println("\nDeletion cancelled.");
+                }
+
+                removed = true;
+                break;
+            }
+        }
+
+        if (!removed) {
             System.out.println("\nNo student found with ID " + id);
         }
     }
